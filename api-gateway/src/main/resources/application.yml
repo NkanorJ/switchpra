@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: api-gateway
+
+  main:
+    web-application-type: reactive
+
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://localhost:9070
+          predicates:
+            - Path=/api/v1/user/**
+
+        - id: bill-payment-service
+          uri: http://localhost:9071
+          predicates:
+            - Path=/bill/v1/**
+
+        - id: transaction-service
+          uri: http://localhost:9072
+          predicates:
+            - Path=/transaction/v1**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+    instance-id: 6767:12:00
+server:
+  port: 9000
