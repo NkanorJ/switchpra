@@ -1,5 +1,6 @@
 package com.user.user_service.commons.dto;
 
+import com.user.user_service.commons.exception.RateLimitException;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
@@ -36,7 +37,11 @@ public class RateLimitingService {
     }
 
     public Bucket resolveIPAddress(String ipAddress) {
-        return cache.computeIfAbsent(ipAddress, this::createIPBucket);
+        var bucket = cache.computeIfAbsent(ipAddress, this::createIPBucket);
+        if (!bucket.tryConsume(1)) {
+            throw new RateLimitException("rate.trial.exceeded", false);
+        }
+        return bucket;
     }
 
     public Bucket createIPBucket(String ipAddress) {

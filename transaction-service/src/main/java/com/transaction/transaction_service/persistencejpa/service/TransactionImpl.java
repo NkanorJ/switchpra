@@ -22,7 +22,7 @@ public class TransactionImpl implements PaymentStorage {
     public TransactionResponse makePayment(TransactionRequest transactionRequest) {
         var paymentChannelResponse = transactionFactory.getPaymentType(transactionRequest.paymentType().name());
 
-        if (paymentChannelResponse.paymentType() == null) {
+        if (paymentChannelResponse.paymentType() == null || paymentChannelResponse.paymentType().equals(PaymentType.UNKNOWN)) {
             throw new UnsupportedTransactionTypeException("Unsupported transaction type: " + transactionRequest.paymentType(), false);
         }
 
