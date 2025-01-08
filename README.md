@@ -71,8 +71,17 @@ identity of the user and grant access to protected endpoints.
 Bearer Token Validation: Services like Bill Payment and Transaction validate the bearer token on every request to ensure
 that the user is authenticated and authorized.
 
-##Technology Stack
+## Technology Stack
 Spring Boot: Used for building the microservices.
 Spring Cloud Gateway: Used for API Gateway routing and security.
 FeignClient: Used for communication between microservices, particularly for user validation in the Bill Payment Service.
 JWT: Used for securing the services and validating users via tokens.
+
+## Unit Testing
+Unit tests have been implemented to ensure the correctness and reliability of the microservices. The key tests include:
+
+User Service: Tests for user login, JWT generation, and user validation during account creation and login processes.
+Bill Payment Service: Tests for validating bearer tokens, interacting with the User Service to verify users, and ensuring bill payments work as expected.
+Transaction Service: Tests for validating JWT tokens during transaction processing and checking transaction status and history.
+Error Handling: Tests for expected exceptions, such as when a user is not found, a role is invalid, or when a rate limit is exceeded.
+The tests ensure that each service behaves correctly under various scenarios, including valid and invalid inputs, edge cases, and error handling situations. This increases the reliability of the system and helps detect issues early in development.
